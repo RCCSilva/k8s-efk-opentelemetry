@@ -3,14 +3,14 @@
 import apm from 'elastic-apm-node';
 import express from 'express';
 
-apm.start({
-  active: process.env.NODE_ENV === 'development'
-})
+const agent = apm.start()
 
 const app = express()
 
 app.get('/', function (req, res) {
+  const transaction = agent.startTransaction('test')
   res.send('Hello World!')
+  transaction.end()
 })
 
 app.listen(3000, () => {

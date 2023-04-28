@@ -2,6 +2,6 @@ FROM node:18-alpine
 
 COPY . .
 
-RUN npm install --only=prod
+RUN npm install
 
 CMD [ "npm", "run", "start" ]

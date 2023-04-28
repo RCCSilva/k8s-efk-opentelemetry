@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-express
+spec:
+  selector:
+    matchLabels:
+      run: app-express
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: app-express
+    spec:
+      containers:
+      - name: app-express
+        image: rccsilva/app-express
+        imagePullPolicy: Never
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        env:
+          - name: ELASTIC_APM_SERVICE_NAME
+            value: app-express
+          - name: ELASTIC_APM_SERVER_URL
+            value: http://apm:8200
+          - name: ELASTIC_APM_SECRET_TOKEN
+            value: s28K47BJewJ7vU435Ng17UlP
+          - name: ELASTIC_APM_VERIFY_SERVER_CERT
+            value: "false"
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-express
+  labels:
+    run: app-express
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+  selector:
+    run: app-express
