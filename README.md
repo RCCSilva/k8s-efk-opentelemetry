@@ -26,6 +26,7 @@ kubectl port-forward service/kibana-kb-http 5601
 kubectl port-forward service/app-express 3000
 kubectl port-forward service/app-fastify 3000
 kubectl port-forward service/app-nest 3000
+kubectl port-forward service/app-express-opentelemetry 3000
 
 docker build -t rccsilva/app-express:latest .
 docker build -t rccsilva/app-fastify:latest .
@@ -34,10 +35,19 @@ docker build -t rccsilva/app-nest:latest .
 kubectl rollout restart deployment app-express
 kubectl rollout restart deployment app-fastify
 kubectl rollout restart deployment app-nest
+
+kubectl rollout restart deployment app-express-opentelemetry
 ```
 
 ```bash
 kubectl run curl --image=radial/busyboxplus:curl -i --tty
+```
+
+## OpenTelemetry
+
+```bash
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
+kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
 ```
 
 ## References

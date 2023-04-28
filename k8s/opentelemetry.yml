@@ -1,0 +1,48 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: demo
+spec:
+  env:
+    - name: ELASTIC_APM_SERVER_ENDPOINT
+      value: "https://apm-server-apm-http:8200"
+    - name: ELASTIC_APM_SECRET_TOKEN
+      value: s28K47BJewJ7vU435Ng17UlP
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+          http:
+    processors:
+      memory_limiter:
+        check_interval: 1s
+        limit_percentage: 75
+        spike_limit_percentage: 15
+      batch:
+        send_batch_size: 10000
+        timeout: 10s
+
+    exporters:
+      logging:
+      otlp/elastic: 
+        endpoint: "${ELASTIC_APM_SERVER_ENDPOINT}"
+        tls:
+          insecure_skip_verify: true
+        headers:
+          Authorization: "Bearer ${ELASTIC_APM_SECRET_TOKEN}"  
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [memory_limiter, batch]
+          exporters: [logging, otlp/elastic]
+        metrics:
+          receivers: [otlp]
+          processors: [memory_limiter, batch]
+          exporters: [logging, otlp/elastic]
+        logs:
+          receivers: [otlp]
+          processors: [memory_limiter, batch]
+          exporters: [logging, otlp/elastic]
