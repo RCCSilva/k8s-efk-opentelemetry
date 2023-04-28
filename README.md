@@ -21,10 +21,19 @@ kubectl apply -f https://download.elastic.co/downloads/eck/2.7.0/operator.yaml
 kubectl apply -f k8s/
 
 kubectl get secret elasticsearch-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode; echo
-kubectl port-forward service/kibana-kb-http 5601  
+kubectl port-forward service/kibana-kb-http 5601
+
+kubectl port-forward service/app-express 3000
+kubectl port-forward service/app-fastify 3000
+kubectl port-forward service/app-nest 3000
 
 docker build -t rccsilva/app-express:latest .
+docker build -t rccsilva/app-fastify:latest .
+docker build -t rccsilva/app-nest:latest .
+
 kubectl rollout restart deployment app-express
+kubectl rollout restart deployment app-fastify
+kubectl rollout restart deployment app-nest
 ```
 
 ```bash
@@ -38,4 +47,4 @@ kubectl run curl --image=radial/busyboxplus:curl -i --tty
 - [Minikube WSL2](https://www.virtualizationhowto.com/2021/11/install-minikube-in-wsl-2-with-kubectl-and-helm/)
 - [Systemd WSL2](https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/)
 - [helm](https://helm.sh/docs/intro/install/)
-- [](https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-quickstart.html)
+- [Elastic Cloud on Kubernetes](https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-quickstart.html)

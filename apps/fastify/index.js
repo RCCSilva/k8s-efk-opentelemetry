@@ -1,11 +1,9 @@
 "use strict";
 
-import apm from 'elastic-apm-node';
-import fastify from 'fastify';
+const apm = require('elastic-apm-node')
+apm.start({ captureBody: 'transactions' })
 
-apm.start({
-  active: process.env.NODE_ENV === 'development'
-})
+const fastify = require('fastify')
 
 // Require the framework and instantiate it
 const app = fastify({
@@ -18,5 +16,13 @@ app.get('/', function (request, reply) {
 })
 
 // Run the server!
-await app.listen({ port: 3000 })
-app.log.info("listening on 3000")
+const start = async () => {
+  try {
+    await app.listen({ port: 3000 })
+  } catch (err) {
+    app.log.error(err)
+    process.exit(1)
+  }
+}
+
+start()
