@@ -1,0 +1,30 @@
+config:
+  inputs: |
+    [INPUT]
+        name              tail
+        path              /var/log/containers/*.log
+        Tag               kube.*
+        multiline.parser  docker, cri
+  outputs: |
+    # [OUTPUT]
+    #     Name                  opentelemetry
+    #     Match                 kube.*
+    #     Host                  demo-collector-headless
+    #     Port                  4318
+    #     Metrics_uri           /v1/metrics
+    #     Logs_uri              /v1/logs
+    #     Traces_uri            /v1/traces
+    #     Log_response_payload  True
+    #     Tls                   Off
+    #     # Tls.verify          Off
+    [OUTPUT]
+        Name        es
+        Match       kube.*
+        Host        elasticsearch-es-default
+        Port        9200
+        Index       logs-fluent_bit-kube-default
+        tls         On
+        tls.verify  Off
+        HTTP_User   elastic
+        HTTP_Passwd 25upHD9m5g1UO68qYK3Ro2K1
+        Suppress_Type_Name On

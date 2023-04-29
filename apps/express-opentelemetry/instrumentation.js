@@ -31,7 +31,7 @@ const sdk = new NodeSDK({
       // Optional hook to insert additional context to log metadata.
       // Called after trace context is injected to metadata.
       logHook: (span, record) => {
-        record['resource.service.name'] = 'app-express-opentelemetry';
+        record['service.name'] = 'app-express-opentelemetry';
       },
     }),
   ],

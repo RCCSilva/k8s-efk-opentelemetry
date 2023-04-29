@@ -37,6 +37,8 @@ kubectl rollout restart deployment app-fastify
 kubectl rollout restart deployment app-nest
 
 kubectl rollout restart deployment app-express-opentelemetry
+
+kubectl get secret elasticsearch-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode; echo
 ```
 
 ```bash
