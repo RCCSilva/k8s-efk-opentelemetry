@@ -7,7 +7,7 @@ const fastify = require('fastify')
 
 // Require the framework and instantiate it
 const app = fastify({
-  logger: true
+  logger: false
 })
 
 // Declare a route
@@ -18,7 +18,7 @@ app.get('/', function (request, reply) {
 // Run the server!
 const start = async () => {
   try {
-    await app.listen({ port: 3000 })
+    await app.listen({ host: '0.0.0.0', port: 3000 })
   } catch (err) {
     app.log.error(err)
     process.exit(1)

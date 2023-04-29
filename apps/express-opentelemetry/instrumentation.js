@@ -1,6 +1,5 @@
 const { NodeSDK, resources } = require('@opentelemetry/sdk-node');
 const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
-const { PeriodicExportingMetricReader, } = require('@opentelemetry/sdk-metrics');
 const { OTLPMetricExporter } = require("@opentelemetry/exporter-metrics-otlp-proto")
 const { OTLPTraceExporter } = require("@opentelemetry/exporter-trace-otlp-proto")
 const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api')
@@ -14,17 +13,21 @@ const {
 } = require('@opentelemetry/resources');
 const { containerDetector } = require('@opentelemetry/resource-detector-container')
 const { SemanticResourceAttributes } = require("@opentelemetry/semantic-conventions");
+const { PeriodicExportingMetricReader, ConsoleMetricExporter } = require('@opentelemetry/sdk-metrics');
 
 const sdk = new NodeSDK({
   serviceName: 'app-express-opentelemetry',
   traceExporter: new OTLPTraceExporter({
     url: "http://demo-collector-headless:4318/v1/traces",
   }),
-  metricReader: new PeriodicExportingMetricReader({
-    exporter: new OTLPMetricExporter({
-      url: 'http://demo-collector-headless:4318/v1/metrics', // url is optional and can be omitted - default is http://localhost:4318/v1/metrics
-    }),
-  }),
+  // metricReader: new PeriodicExportingMetricReader({
+  //   exporter: new OTLPMetricExporter({
+  //     url: 'http://demo-collector-headless:4318/v1/metrics', // url is optional and can be omitted - default is http://localhost:4318/v1/metrics
+  //   }),
+  // }),
+  // metricReader: new PeriodicExportingMetricReader({
+  //   exporter: new ConsoleMetricExporter()
+  // }),
   instrumentations: [
     getNodeAutoInstrumentations(),
     new WinstonInstrumentation({

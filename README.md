@@ -20,6 +20,8 @@ kubectl apply -f https://download.elastic.co/downloads/eck/2.7.0/operator.yaml
 ```bash
 kubectl apply -f k8s/
 
+kubectl get secret/apm-server-apm-token -o go-template='{{index .data "secret-token" | base64decode}}'
+
 kubectl get secret elasticsearch-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode; echo
 kubectl port-forward service/kibana-kb-http 5601
 
@@ -27,18 +29,6 @@ kubectl port-forward service/app-express 3000
 kubectl port-forward service/app-fastify 3000
 kubectl port-forward service/app-nest 3000
 kubectl port-forward service/app-express-opentelemetry 3000
-
-docker build -t rccsilva/app-express:latest .
-docker build -t rccsilva/app-fastify:latest .
-docker build -t rccsilva/app-nest:latest .
-
-kubectl rollout restart deployment app-express
-kubectl rollout restart deployment app-fastify
-kubectl rollout restart deployment app-nest
-
-kubectl rollout restart deployment app-express-opentelemetry
-
-kubectl get secret elasticsearch-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode; echo
 ```
 
 ```bash

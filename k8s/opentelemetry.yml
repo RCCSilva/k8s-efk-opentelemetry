@@ -7,7 +7,10 @@ spec:
     - name: ELASTIC_APM_SERVER_ENDPOINT
       value: "https://apm-server-apm-http:8200"
     - name: ELASTIC_APM_SECRET_TOKEN
-      value: s28K47BJewJ7vU435Ng17UlP
+      valueFrom:
+        secretKeyRef:
+          name: apm-server-apm-token
+          key: secret-token
   config: |
     receivers:
       otlp:
