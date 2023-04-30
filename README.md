@@ -23,15 +23,8 @@ kubectl apply -f https://download.elastic.co/downloads/eck/2.7.0/operator.yaml
 ```bash
 kubectl apply -f k8s/
 
-kubectl get secret/apm-server-apm-token -o go-template='{{index .data "secret-token" | base64decode}}'
-
-kubectl get secret elasticsearch-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode; echo
-kubectl port-forward service/kibana-kb-http 5601
-
-kubectl port-forward service/app-express 3000
-kubectl port-forward service/app-fastify 3000
-kubectl port-forward service/app-nest 3000
-kubectl port-forward service/app-express-opentelemetry 3000
+kubectl get secret -n observability elasticsearch-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode; echo
+kubectl port-forward -n observability service/kibana-kb-http 5601
 ```
 
 ```bash
@@ -57,6 +50,8 @@ helm upgrade --install fluent-bit fluent/fluent-bit -f helm/fluentbit/values.yml
 # helm repo add istio https://istio-release.storage.googleapis.com/charts
 
 kubectl create namespace istio-system
+
+istioctl install
 ```
 
 ## References
