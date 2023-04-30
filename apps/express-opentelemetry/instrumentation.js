@@ -15,10 +15,12 @@ const { containerDetector } = require('@opentelemetry/resource-detector-containe
 const { SemanticResourceAttributes } = require("@opentelemetry/semantic-conventions");
 const { PeriodicExportingMetricReader, ConsoleMetricExporter } = require('@opentelemetry/sdk-metrics');
 
+const HOST_OTPL_COLLECTOR = process.env.HOST_OTPL_COLLECTOR
+
 const sdk = new NodeSDK({
   serviceName: 'app-express-opentelemetry',
   traceExporter: new OTLPTraceExporter({
-    url: "http://demo-collector-headless:4318/v1/traces",
+    url: `${HOST_OTPL_COLLECTOR}/v1/traces`,
   }),
   // metricReader: new PeriodicExportingMetricReader({
   //   exporter: new OTLPMetricExporter({

@@ -1,7 +1,8 @@
 apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
-  name: demo
+  name: collector
+  namespace: observability
 spec:
   env:
     - name: ELASTIC_APM_SERVER_ENDPOINT

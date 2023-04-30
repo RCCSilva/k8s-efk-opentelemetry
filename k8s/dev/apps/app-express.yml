@@ -1,20 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-fastify
+  name: app-express
+  namespace: dev
 spec:
   selector:
     matchLabels:
-      run: app-fastify
+      run: app-express
   replicas: 1
   template:
     metadata:
       labels:
-        run: app-fastify
+        run: app-express
     spec:
       containers:
-      - name: app-fastify
-        image: rccsilva/app-fastify:latest
+      - name: app-express
+        image: rccsilva/app-express
         imagePullPolicy: Never
         resources:
           limits:
@@ -22,9 +23,9 @@ spec:
             memory: 512Mi
         env:
           - name: ELASTIC_APM_SERVICE_NAME
-            value: app-fastify
+            value: app-express
           - name: ELASTIC_APM_SERVER_URL
-            value: http://apm:8200
+            value: http://apm.observability.svc:8200
           - name: ELASTIC_APM_VERIFY_SERVER_CERT
             value: "false"
         ports:
@@ -33,12 +34,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-fastify
+  name: app-express
+  namespace: dev
   labels:
-    run: app-fastify
+    run: app-express
 spec:
   ports:
   - port: 3000
     protocol: TCP
   selector:
-    run: app-fastify
+    run: app-express

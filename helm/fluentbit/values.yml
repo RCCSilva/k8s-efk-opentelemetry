@@ -1,6 +1,10 @@
 config:
   inputs: |
     [INPUT]
+        name            node_exporter_metrics
+        tag             node_metrics
+        scrape_interval 2
+    [INPUT]
         name              tail
         path              /var/log/containers/*.log
         Tag               kube.*
@@ -28,3 +32,6 @@ config:
         HTTP_User   elastic
         HTTP_Passwd 25upHD9m5g1UO68qYK3Ro2K1
         Suppress_Type_Name On
+    [OUTPUT]
+        Name        stdout
+        Match       node_metrics
