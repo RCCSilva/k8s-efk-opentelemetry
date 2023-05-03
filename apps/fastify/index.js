@@ -3,6 +3,7 @@
 const apm = require('elastic-apm-node')
 apm.start({ captureBody: 'transactions' })
 
+const { default: axios } = require('axios');
 const fastify = require('fastify')
 
 // Require the framework and instantiate it
@@ -11,7 +12,8 @@ const app = fastify({
 })
 
 // Declare a route
-app.get('/', function (request, reply) {
+app.get('/', async (request, reply) => {
+  await axios.get('http://app-express.dev.svc:3000/')
   reply.send({ hello: 'world' })
 })
 

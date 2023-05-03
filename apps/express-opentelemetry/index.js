@@ -25,12 +25,12 @@ app.listen(PORT, () => {
   logger.info(`Listening for requests on http://localhost:${PORT}`);
 });
 
-const asyncLoop = async () => {
-  const api = axios.create({ baseURL: 'http://app-fastify.dev.svc:3000/' })
-  for await (const _ of setInterval(1000)) {
-    const response = await api.get('/').catch(err => logger.error(err))
-    logger.info(`${response.status} ${response.data}`)
-  }
-}
+// const asyncLoop = async () => {
+//   const api = axios.create({ baseURL: 'http://app-fastify.dev.svc:3000/' })
+//   for await (const _ of setInterval(1000)) {
+//     const response = await api.get('/').catch(err => logger.error(err))
+//     logger.info(`${response.status} ${response.data}`)
+//   }
+// }
 
-asyncLoop()
+// asyncLoop()
