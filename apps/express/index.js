@@ -11,16 +11,22 @@ const logger = winston.createLogger({
   }
 })
 const { default: axios } = require('axios');
-const { setInterval } = require('timers/promises')
+const { setInterval, setTimeout } = require('timers/promises')
 
 const express = require("express");
 const app = express()
 
-app.get('/', function (req, res) {
+app.use(function (req, res, next) {
+  apm.currentTransaction?.addLabels({ customLabel: req.headers['customlabel'] })
+  next()
+})
+
+app.get('/', async function (req, res) {
   logger.info({ ...req })
   const t = apm.currentTransaction
   const s = t.startSpan('test')
   s?.end()
+  await setTimeout(150)
   res.send('Hello World!')
 })
 

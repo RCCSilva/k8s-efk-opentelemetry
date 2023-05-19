@@ -3,6 +3,8 @@
 const apm = require('elastic-apm-node')
 apm.start({ captureBody: 'transactions' })
 
+const { randomUUID } = require('crypto');
+
 const { default: axios } = require('axios');
 const fastify = require('fastify')
 
@@ -13,7 +15,7 @@ const app = fastify({
 
 // Declare a route
 app.get('/', async (request, reply) => {
-  await axios.get('http://app-express.dev.svc:3000/')
+  await axios.get('http://app-express.dev.svc:3000/', { headers: { customLabel: randomUUID() } })
   reply.send({ hello: 'world' })
 })
 

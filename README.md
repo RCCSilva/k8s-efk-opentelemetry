@@ -8,50 +8,10 @@
 eval $(minikube docker-env)
 ```
 
-## Setup
-
-```bash
-minikube start --memory=8g --cpus=4
-
-kubectl create namespace elastic-system
-kubectl label namespace elastic-system istio-injection=enabled
-
-kubectl create -f https://download.elastic.co/downloads/eck/2.7.0/crds.yaml
-kubectl apply -f https://download.elastic.co/downloads/eck/2.7.0/operator.yaml
-```
-
-```bash
-kubectl apply -f k8s/
-
-kubectl get secret -n observability elasticsearch-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode; echo
-kubectl port-forward -n observability service/kibana-kb-http 5601
-```
+## Debugging
 
 ```bash
 kubectl run curl --image=radial/busyboxplus:curl -i --tty
-```
-
-## OpenTelemetry
-
-```bash
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
-kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
-```
-
-### Fluent Bit
-
-```bash
-helm upgrade --install fluent-bit fluent/fluent-bit -f helm/fluentbit/values.yml
-```
-
-### Istio
-
-```bash
-# helm repo add istio https://istio-release.storage.googleapis.com/charts
-
-kubectl create namespace istio-system
-
-istioctl install
 ```
 
 ## References
