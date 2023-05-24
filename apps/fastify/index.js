@@ -5,8 +5,17 @@ apm.start({ captureBody: 'transactions' })
 
 const { randomUUID } = require('crypto');
 
+const winston = require('winston');
+const logger = winston.createLogger({
+  transports: [new winston.transports.Console()],
+  defaultMeta: {
+    'service.name': 'app-fastify'
+  }
+})
+
 const { default: axios } = require('axios');
 const fastify = require('fastify')
+
 
 // Require the framework and instantiate it
 const app = fastify({
@@ -16,6 +25,7 @@ const app = fastify({
 // Declare a route
 app.get('/', async (request, reply) => {
   await axios.get('http://app-express.dev.svc:3000/', { headers: { customLabel: randomUUID() } })
+  logger.info(`random message from ${request.ip}`)
   reply.send({ hello: 'world' })
 })
 
