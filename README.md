@@ -1,18 +1,24 @@
 # Kubernetes EFK Opentelemetry
 
-## Commands
-
-- Minikube using local docker images
-
-```bash
-eval $(minikube docker-env)
-```
+A small Kubernetes template for "fast" setup. The objective is have "must have" and "should have" ideas that can be selected and easily adopted on any Kubernetes setup.
 
 ## Debugging
 
 ```bash
 kubectl run curl --image=radial/busyboxplus:curl -i --tty
 ```
+
+## Deployments
+
+- Elastic on Kubernetes
+  + Kibana
+  + Agent
+  + APM Server
+  + Elastic Search
+- Istio
+- OpenTelemetry
+- Fluent Bit
+- Cert Manager
 
 ## References
 
